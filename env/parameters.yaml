@@ -1,0 +1,12 @@
+adminUser:
+  password: vault:donkeyrose/adminUser:password
+  username: admin
+dashboardUrl: https://dashboard.staging-jxaas.live
+enableDocker: false
+pipelineUser:
+  email: arcalos-admin@googlegroups.com
+  token: vault:donkeyrose/pipelineUser:token
+  username: cloudbees-ci-cd-staging[bot]
+prow:
+  hmacToken: vault:donkeyrose/prow:hmacToken
+segmentWriteKey: vault:donkeyrose:segmentWriteKey

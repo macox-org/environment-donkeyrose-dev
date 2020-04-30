@@ -1,40 +1,105 @@
 autoUpdate:
   enabled: true
-  schedule: '0 0 * * *'
+  schedule: 0 0 * * *
+bootConfigURL: https://github.com/cloudbees/arcalos-boot-config.git
 cluster:
-  clusterName: ""
-  environmentGitOwner: ""
-  project: ""
+  azure: {}
+  chartRepository: http://bucketrepo/bucketrepo/charts/
+  clusterName: donkeyrose
+  environmentGitOwner: macox-org
+  environmentGitPublic: true
+  externalDNSSAName: donkeyrose-dn
+  gitKind: github
+  gitName: github
+  gitPublic: true
+  gitServer: https://github.com
+  gke:
+    projectNumber: "519510603210"
+  kanikoSAName: donkeyrose-ko
+  namespace: jx
+  project: cbjx-donkeyrose
   provider: gke
-  zone: ""
-gitops: true
-githubApp:
-  enabled: false
-  url: ""
-  schedule: '0 0 * * *'
+  registry: gcr.io
+  vaultName: donkeyrose
+  vaultSAName: donkeyrose-vt
+  zone: us-central1-c
 environments:
-- key: dev
-- key: staging
-- key: production
+- ingress:
+    cloud_dns_secret_name: external-dns-gcp-sa
+    domain: cbjx-donkeyrose.staging-jxaas.live
+    domainIssuerURL: https://jx-tenant-service-jx.mgmt.staging-jxaas.live
+    externalDNS: true
+    namespaceSubDomain: -jx.
+    tls:
+      email: jenkins-x@cloudbees.com
+      enabled: true
+      production: false
+  key: dev
+  repository: environment-donkeyrose-dev
+- ingress:
+    domain: ""
+    externalDNS: false
+    namespaceSubDomain: ""
+    tls:
+      email: ""
+      enabled: false
+      production: false
+  key: staging
+  repository: environment-donkeyrose-staging
+- ingress:
+    domain: ""
+    externalDNS: false
+    namespaceSubDomain: ""
+    tls:
+      email: ""
+      enabled: false
+      production: false
+  key: production
+  repository: environment-donkeyrose-production
+githubApp:
+  enabled: true
+  schedule: 0 0 * * *
+  url: https://lighthouse-githubapp-jx.mgmt.staging-jxaas.live
+gitops: true
 ingress:
-  domain: ""
+  cloud_dns_secret_name: external-dns-gcp-sa
+  domain: cbjx-donkeyrose.staging-jxaas.live
+  domainIssuerURL: https://jx-tenant-service-jx.mgmt.staging-jxaas.live
   externalDNS: true
+  namespaceSubDomain: -jx.
   tls:
     email: jenkins-x@cloudbees.com
     enabled: true
     production: false
 kaniko: true
+repository: bucketrepo
 secretStorage: vault
 storage:
+  backup:
+    enabled: true
+    url: gs://cbjx-donkeyrose-backup
   logs:
-    enabled: false
-    url: ""
+    enabled: true
+    url: gs://cbjx-donkeyrose-lts
   reports:
     enabled: false
     url: ""
   repository:
-    enabled: false
-    url: ""
+    enabled: true
+    url: gs://cbjx-donkeyrose-repository
+vault:
+  aws: {}
+  bucket: cbjx-donkeyrose-vault
+  key: donkeyrose-0530f215c418-crypto-key
+  keyring: donkeyrose-0530f215c418-keyring
+  name: donkeyrose
+  serviceAccount: donkeyrose-vt
 velero:
   namespace: velero
-webhook: prow
+  schedule: ""
+  serviceAccount: donkeyrose-vo
+  ttl: ""
+versionStream:
+  ref: v0.0.395
+  url: https://github.com/cloudbees/arcalos-jenkins-x-versions.git
+webhook: lighthouse
